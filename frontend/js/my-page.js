@@ -1,0 +1,193 @@
+// DOM이 로드된 후 실행
+document.addEventListener('DOMContentLoaded', async () => {
+    // 세션 확인
+    const session = await checkSession();
+    if (!session) {
+        alert('로그인이 필요합니다.');
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // 회원 정보 로드
+    loadMemberInfo();
+    
+    // 주문 내역 로드
+    loadOrderHistory();
+    
+    // 로그아웃 버튼 이벤트 리스너
+    document.getElementById('logoutLink').addEventListener('click', handleLogout);
+    // 주문 취소 확인 버튼 이벤트 리스너
+    const confirmCancelBtn = document.getElementById('confirmCancelBtn');
+    
+});
+
+// 회원 정보 로드 함수
+async function loadMemberInfo() {
+    const memberInfoContainer = document.getElementById('memberInfo');
+    
+    try {
+        const memberInfo = await getMemberInfo();
+        
+        const html = `
+            <div>
+                <p><strong>이름:</strong> ${memberInfo.name}</p>
+                <p><strong>이메일:</strong> ${memberInfo.email}</p>
+                <p><strong>주소:</strong> ${memberInfo.address}</p>
+                <p><strong>가입일:</strong> ${new Date(memberInfo.createdAt).toLocaleDateString()}</p>
+            </div>
+        `;
+        
+        memberInfoContainer.innerHTML = html;
+    } catch (error) {
+        memberInfoContainer.innerHTML = '<p>회원 정보를 불러오는 중 오류가 발생했습니다.</p>';
+        console.error('회원 정보 로드 오류:', error);
+    }
+}
+
+// 주문 내역 로드 함수
+async function loadOrderHistory() {
+    const orderHistoryContainer = document.getElementById('orderHistory');
+    
+    try {        
+        const orders = await getOrders();
+        console.log("order : " + orders);
+        
+        if (orders.length === 0) {
+            orderHistoryContainer.innerHTML = '<p>주문 내역이 없습니다.</p>';
+            return;
+        }
+        
+        let html = '';
+        
+        orders.forEach(order => {
+            const orderDate = new Date(order.orderDate).toLocaleDateString();
+            const canCancel = ['ORDER', 'SHIPPING'].includes(order.orderStatus);
+            const cancelButton = canCancel ? 
+                `<button class="btn btn-sm btn-danger cancel-order-btn" data-order-id="${order.orderId}">취소</button>` : 
+                `<button class="btn btn-sm btn-secondary" disabled>취소불가</button>`;
+            
+            html += `
+            <div class="card mb-3">
+            <div class="card-header d-flex justify-content-between">
+            <span>주문번호: ${order.orderId}</span>
+            <span>주문일자: ${orderDate}</span>
+            </div>
+            <div class="card-body">
+            <h5 class="card-title">주문 상태: ${getOrderStatusText(order.orderStatus)}</h5>
+            <p class="card-text">총 주문금액: ${(Number(order.totalPrice) || 0).toLocaleString()}원</p>
+            <h6 class="mt-3">주문 상품</h6>
+            <ul class="list-group">
+            `;
+            
+            order.orderItems.forEach(item => {
+                html += `
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                <span>${item.itemNm}</span>
+                <span class="text-muted"> x ${item.count}개</span>
+                </div>
+                <span>${(item.price * item.count).toLocaleString()}원</span>
+                </li>
+                `;
+            });
+            
+            html += `
+                        </ul>
+                        <div class="mt-3">
+                            ${cancelButton}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        orderHistoryContainer.innerHTML = html;
+
+        // 취소 버튼에 이벤트 리스너 추가
+        document.querySelectorAll('.cancel-order-btn').forEach(button => {
+            button.addEventListener('click', showCancelModal);
+        });
+    } catch (error) {
+        orderHistoryContainer.innerHTML = '<p>주문 내역을 불러오는 중 오류가 발생했습니다.</p>';
+        console.error('주문 내역 로드 오류:', error);
+    }
+}
+
+// 주문 상태 텍스트 반환 함수
+function getOrderStatusText(status) {
+    switch (status) {
+        case 'ORDER':
+            return '주문 완료';
+        case 'CANCEL':
+            return '주문 취소';
+        case 'SHIPPING':
+            return '배송 중';
+        case 'COMPLETE':
+            return '배송 완료';
+        default:
+            return '알 수 없음';
+    }
+}
+
+function showCancelModal(e) {
+    const orderId = e.target.dataset.orderId;
+    
+    // 모달 대신 직접 confirm으로 확인
+    if (confirm('주문을 취소하시겠습니까?')) {
+        handleDirectCancel(orderId);
+    }
+}
+
+// 직접 취소 처리 함수
+async function handleDirectCancel(orderId) {
+    try {
+        await fetchAPI(`orders/${orderId}/cancel`, {
+            method: 'POST',
+            body: JSON.stringify({
+                cancelReason: "사용자 요청에 의한 취소"
+            })
+        });
+        
+        alert('주문이 성공적으로 취소되었습니다.');
+        loadOrderHistory(); // 주문 내역 새로고침
+    } catch (error) {
+        console.error('주문 취소 오류:', error);
+        alert('주문 취소 중 오류가 발생했습니다.');
+    }
+}
+
+// 세션 확인 함수
+async function checkSession() {
+    try {
+        const response = await fetch('/api/members/session', {
+            method: 'GET',
+            credentials: 'include'
+        });
+        
+        if (!response.ok) throw new Error('세션 없음');
+        return await response.json();
+    } catch (error) {
+        console.error('세션 확인 오류:', error);
+        return null;
+    }
+}
+
+// 로그아웃 처리 함수
+async function handleLogout(e) {
+    e.preventDefault();
+    try {
+        const response = await fetch('/api/members/logout', {
+            method: 'POST',
+            credentials: 'include'
+        });
+        
+        if (response.ok) {
+            window.location.href = '/login.html';
+        } else {
+            throw new Error('로그아웃 실패');
+        }
+    } catch (error) {
+        console.error('로그아웃 오류:', error);
+        alert('로그아웃 처리 중 오류가 발생했습니다.');
+    }
+}

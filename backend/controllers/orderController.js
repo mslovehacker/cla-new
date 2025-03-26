@@ -1,0 +1,151 @@
+const Order = require('../models/order');
+const Cart = require('../models/cart');
+const Item = require('../models/item');
+const { pool } = require('../config/database');
+const { logger } = require('../utils/logger');
+
+// 주문 생성
+exports.createOrder = async (req, res) => {
+  const connection = await pool.getConnection();
+  
+  try {
+    await connection.beginTransaction();
+    
+    const memberId = req.session.user.id;
+    const { cartItemIds } = req.body;
+    
+    // 필수 필드 검증
+    if (!cartItemIds || !cartItemIds.length) {
+      await connection.rollback();
+      return res.status(400).json({ message: '주문할 상품을 선택해주세요.' });
+    }
+    
+    // 장바구니 아이템 조회
+    const cartItems = [];
+    let totalPrice = 0;
+    
+    for (const cartItemId of cartItemIds) {
+      const cartItem = await Cart.findById(cartItemId);
+      
+      if (!cartItem) {
+        await connection.rollback();
+        return res.status(404).json({ message: `장바구니 항목(ID: ${cartItemId})을 찾을 수 없습니다.` });
+      }
+      
+      if (cartItem.memberId !== memberId) {
+        await connection.rollback();
+        return res.status(403).json({ message: '권한이 없습니다.' });
+      }
+      
+      // 재고 확인
+      const hasStock = await Item.checkStock(cartItem.itemId, cartItem.count);
+      if (!hasStock) {
+        await connection.rollback();
+        return res.status(400).json({ message: `상품(${cartItem.itemNm})의 재고가 부족합니다.` });
+      }
+      
+      // 재고 감소
+      await Item.decreaseStock(cartItem.itemId, cartItem.count);
+      
+      const itemTotal = cartItem.price * cartItem.count;
+      totalPrice += itemTotal;
+      
+      cartItems.push({
+        itemId: cartItem.itemId,
+        itemNm: cartItem.itemNm,
+        count: cartItem.count,
+        price: cartItem.price
+      });
+    }
+    
+    // 주문 생성
+    const orderData = {
+      memberId,
+      totalPrice,
+      orderItems: cartItems
+    };
+    
+    const orderId = await Order.create(orderData, connection);
+    
+    // 장바구니에서 주문한 상품 삭제
+    await Cart.removeItems(cartItemIds, memberId);
+    
+    await connection.commit();
+    
+    res.status(201).json({
+      message: '주문이 성공적으로 생성되었습니다.',
+      orderId
+    });
+  } catch (error) {
+    await connection.rollback();
+    logger.error('주문 생성 오류:', error);
+    res.status(500).json({ message: '주문 처리 중 오류가 발생했습니다.' });
+  } finally {
+    connection.release();
+  }
+};
+
+// 회원의 주문 목록 조회
+exports.getOrders = async (req, res) => {    
+  try {
+    const memberId = req.session.user.id;
+    const orders = await Order.findByMemberId(memberId);
+    
+    res.status(200).json(orders);
+  } catch (error) {
+    logger.error('주문 목록 조회 오류:', error);
+    res.status(500).json({ message: '주문 목록을 불러오는 중 오류가 발생했습니다.' });
+  }
+};
+
+// 주문 상세 조회
+exports.getOrderById = async (req, res) => {
+  try {
+    const memberId = req.session.user.id;
+    const orderId = req.params.id;
+    
+    const order = await Order.findById(orderId, memberId);
+    
+    if (!order) {
+      return res.status(404).json({ message: '주문을 찾을 수 없습니다.' });
+    }
+    
+    res.status(200).json(order);
+  } catch (error) {
+    logger.error('주문 상세 조회 오류:', error);
+    res.status(500).json({ message: '주문 정보를 불러오는 중 오류가 발생했습니다.' });
+  }
+};
+
+// 주문 취소 API
+exports.cancelOrder = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    
+    // 주문이 존재하는지 확인
+    const [orderResult] = await pool.query(
+      'SELECT * FROM orders WHERE id = ?',
+      [orderId]
+    );
+    
+    if (orderResult.length === 0) {
+      return res.status(404).json({ message: '주문을 찾을 수 없습니다.' });
+    }
+    
+    // 주문 상태 변경
+    const [result] = await pool.query(
+      'UPDATE orders SET order_status = ? WHERE id = ?',
+      ['CANCEL', orderId]
+    );
+    
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: '주문을 찾을 수 없습니다.' });
+    }
+    
+    res.status(200).json({ message: '주문이 성공적으로 취소되었습니다.' });
+  } catch (error) {
+    console.error('주문 취소 오류:', error);
+    res.status(500).json({ message: '주문 취소 중 오류가 발생했습니다.' });
+  }
+};
+

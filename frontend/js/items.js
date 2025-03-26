@@ -1,0 +1,273 @@
+// DOM이 로드된 후 실행
+document.addEventListener('DOMContentLoaded', () => {
+    // 상품 목록 로드
+    loadItems();
+    
+    // 사용자 인증 상태 확인
+    checkSessionStatus();
+    
+    // 검색 버튼 이벤트 리스너
+    document.getElementById('searchButton').addEventListener('click', () => {
+        loadItems();
+    });
+    
+    // 정렬 선택 변경 이벤트 리스너
+    document.getElementById('sortSelect').addEventListener('change', () => {
+        loadItems();
+    });
+});
+
+// 상품 목록 로드
+async function loadItems() {
+    try {
+        // 검색어와 정렬 옵션 가져오기
+        const searchTerm = document.getElementById('searchInput').value;
+        const sortOption = document.getElementById('sortSelect').value;
+        
+        // API 호출
+        const response = await fetchAPI(`items?search=${searchTerm}&sort=${sortOption}`);
+        
+        // 응답이 페이지네이션 객체인지 확인
+        let items = [];
+        if (response && Array.isArray(response.content)) {
+            items = response.content;  // 페이지네이션 객체에서 content 배열 추출
+            
+            // 페이지네이션 정보가 있으면 페이지네이션 UI 업데이트
+            if (response.totalPages) {
+                createPagination(response.page, response.totalPages);
+            }
+        } else if (Array.isArray(response)) {
+            items = response;  // 응답이 이미 배열인 경우
+        } else {
+            console.log('API 응답이 예상과 다릅니다:', response);
+            items = [];  // 기본값으로 빈 배열 사용
+        }
+        
+        const itemsList = document.getElementById('itemsList');
+        
+        // 로딩 스피너 제거
+        itemsList.innerHTML = '';
+        
+        // 사용자 역할 확인
+        let userRole = '';
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const tokenData = JSON.parse(atob(token.split('.')[1]));
+                userRole = tokenData.role;
+            } catch (error) {
+                console.error('토큰 파싱 오류:', error);
+            }
+        }
+        
+        // 상품 등록 버튼 추가 (관리자 또는 판매자만 표시)
+        if (userRole === 'ADMIN' || userRole === 'SELLER') {
+            const buttonDiv = document.createElement('div');
+            buttonDiv.className = 'col-12 mb-4 text-end';
+            buttonDiv.innerHTML = '<a href="item-register.html" class="btn btn-success">상품 등록</a>';
+            itemsList.appendChild(buttonDiv);
+        }
+        
+        if (items.length === 0) {
+            const noItemsDiv = document.createElement('div');
+            noItemsDiv.className = 'col-12 text-center';
+            noItemsDiv.innerHTML = '<p>등록된 상품이 없습니다.</p>';
+            itemsList.appendChild(noItemsDiv);
+            return;
+        }
+        
+        // 상품 목록 생성
+        items.forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'col-md-3 mb-4';
+            itemDiv.innerHTML = `
+                <div class="card h-100">
+                    <img src="${item.imgUrl || 'img/no-image.jpg'}" class="card-img-top" alt="${item.itemNm}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">${item.itemNm}</h5>
+                        <p class="card-text">${(Number(item.price) || 0).toLocaleString()}원</p>
+                        <div class="d-flex justify-content-between">
+                            <a href="item-detail.html?id=${item.id}" class="btn btn-outline-primary">상세보기</a>                            
+                        </div>
+                    </div>
+                </div>
+            `;
+            itemsList.appendChild(itemDiv);
+        });
+        
+        // 페이지네이션 생성 (예시)
+        createPagination(1, 5); // 현재 페이지, 총 페이지 수
+    } catch (error) {
+        console.error('상품 목록 로드 오류:', error);
+        const itemsList = document.getElementById('itemsList');
+        itemsList.innerHTML = '<div class="col-12 text-center"><p>상품을 불러오는 중 오류가 발생했습니다.</p></div>';
+    }
+}
+
+// 장바구니에 상품 추가
+async function addToCart(itemId) {
+    try {
+        // 로그인 상태 확인
+        if (!localStorage.getItem('token')) {
+            alert('로그인이 필요합니다.');
+            window.location.href = 'login.html?redirect=items.html';
+            return;
+        }
+        
+        // 장바구니에 상품 추가 API 호출
+        await fetchAPI('cart', {
+            method: 'POST',
+            body: JSON.stringify({
+                itemId: itemId,
+                count: 1
+            })
+        });
+        
+        alert('장바구니에 상품이 추가되었습니다.');
+    } catch (error) {
+        console.error('장바구니 추가 오류:', error);
+        alert('장바구니에 상품을 추가하는 중 오류가 발생했습니다.');
+    }
+}
+
+// 페이지네이션 생성
+function createPagination(currentPage, totalPages) {
+    const pagination = document.getElementById('pagination');
+    let html = '';
+    
+    // 이전 페이지 버튼
+    html += `
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+    `;
+    
+    // 페이지 번호 버튼
+    for (let i = 1; i <= totalPages; i++) {
+        html += `
+            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="changePage(${i}); return false;">${i}</a>
+            </li>
+        `;
+    }
+    
+    // 다음 페이지 버튼
+    html += `
+        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+            <a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    `;
+    
+    pagination.innerHTML = html;
+}
+
+// 페이지 변경
+function changePage(page) {
+    // 페이지 번호를 저장하고 상품 목록 다시 로드
+    currentPage = page;
+    loadItems();
+}
+
+
+// 사용자 인증 상태 확인 함수
+function checkAuthStatus() {
+    const token = localStorage.getItem('token');
+    const navbarNav = document.getElementById('navbarNav');
+    
+    if (!token) return; // 토큰이 없으면 기본 메뉴 유지
+    
+    try {
+        // 토큰에서 사용자 정보 추출
+        const tokenData = JSON.parse(atob(token.split('.')[1]));
+        const userRole = tokenData.role;
+        
+        const authLinks = navbarNav.querySelector('ul.navbar-nav:last-child');
+        
+        // 기본 메뉴 항목
+        let menuHTML = `
+            <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">로그아웃</a></li>
+            <li class="nav-item"><a class="nav-link" href="my-page.html">마이페이지</a></li>
+            <li class="nav-item"><a class="nav-link" href="cart.html">장바구니</a></li>
+        `;
+        
+        // 역할별 추가 메뉴
+        if (userRole === 'SELLER' || userRole === 'ADMIN') {
+            menuHTML += `<li class="nav-item"><a class="nav-link" href="item-register.html">물품 등록</a></li>`;
+        }
+        
+        if (userRole === 'ADMIN') {
+            menuHTML += `<li class="nav-item"><a class="nav-link" href="admin-dashboard.html">관리자 대시보드</a></li>`;
+        }
+        
+        authLinks.innerHTML = menuHTML;
+        
+        // 로그아웃 이벤트 리스너 추가
+        document.getElementById('logoutLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        });
+    } catch (error) {
+        console.error('사용자 인증 상태 확인 오류:', error);
+        localStorage.removeItem('token');
+    }
+}
+
+// 사용자 인증 상태 확인 함수 (세션 기반)
+async function checkSessionStatus() {
+    const navbarNav = document.getElementById('navbarNav');
+    
+    try {
+        // 세션 상태 확인 요청
+        const response = await fetch('/api/members/session', { method: 'GET', credentials: 'include' });
+        const result = await response.json();
+
+        if (response.status === 200 && result.user) {
+            const userRole = result.user.role;
+
+            const authLinks = navbarNav.querySelector('ul.navbar-nav:last-child');
+            
+            // 기본 메뉴 항목
+            let menuHTML = `
+                <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">로그아웃</a></li>
+                <li class="nav-item"><a class="nav-link" href="my-page.html">마이페이지</a></li>
+                <li class="nav-item"><a class="nav-link" href="cart.html">장바구니</a></li>
+            `;
+            
+            // 역할별 추가 메뉴
+            if (userRole === 'SELLER' || userRole === 'ADMIN') {
+                menuHTML += `<li class="nav-item"><a class="nav-link" href="item-register.html">물품 등록</a></li>`;
+            }
+            
+            if (userRole === 'ADMIN') {
+                menuHTML += `<li class="nav-item"><a class="nav-link" href="admin-dashboard.html">관리자 대시보드</a></li>`;
+            }
+            
+            authLinks.innerHTML = menuHTML;
+            
+            // 로그아웃 이벤트 리스너 추가
+            document.getElementById('logoutLink').addEventListener('click', async (e) => {
+                e.preventDefault();
+                await logout();
+                window.location.href = '/';
+            });
+        } else {
+            console.warn('사용자가 로그인하지 않았습니다.');
+        }
+    } catch (error) {
+        console.error('세션 확인 오류:', error);
+    }
+}
+
+// 로그아웃 함수
+async function logout() {
+    try {
+        await fetch('/api/members/logout', { method: 'POST', credentials: 'include' });
+    } catch (error) {
+        console.error('로그아웃 오류:', error);
+    }
+}

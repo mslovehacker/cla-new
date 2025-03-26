@@ -1,0 +1,147 @@
+2025-03-19 13:53:47 error: 데이터베이스 연결 실패로 서버를 시작할 수 없습니다.
+2025-03-19 13:55:58 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 14:30:22 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 14:41:41 error: 회원 목록 조회 오류: Member.findAll is not a function
+2025-03-19 14:41:41 error: 대시보드 정보 조회 오류: Member.count is not a function
+2025-03-19 14:41:48 error: 주문 목록 조회 오류: Order.findAll is not a function
+2025-03-19 14:41:49 error: 회원 목록 조회 오류: Member.findAll is not a function
+2025-03-19 14:41:52 error: 회원 목록 조회 오류: Member.findAll is not a function
+2025-03-19 14:41:52 error: 대시보드 정보 조회 오류: Member.count is not a function
+2025-03-19 14:43:38 error: 대시보드 정보 조회 오류: Member.count is not a function
+2025-03-19 14:43:38 error: 회원 목록 조회 오류: Member.findAll is not a function
+2025-03-19 14:52:47 error: 대시보드 정보 조회 오류: Member.count is not a function
+2025-03-19 14:52:47 error: 회원 목록 조회 오류: Member.findAll is not a function
+2025-03-19 14:57:47 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 15:19:25 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 15:32:23 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 15:33:50 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 15:39:13 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 15:55:30 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 15:57:43 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 15:59:42 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 16:05:36 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 16:10:55 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 16:13:28 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 16:49:43 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 17:02:07 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 17:08:36 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 17:24:26 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-19 17:24:42 error: 상품 등록 오류: pool is not defined
+2025-03-20 10:04:57 error: 상품 등록 오류: pool is not defined
+2025-03-20 10:09:40 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 10:16:34 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 10:16:56 error: 상품 등록 오류: Unknown column 'hashed_file_name' in 'field list'
+2025-03-20 10:18:31 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 10:22:18 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 10:22:21 error: 상품 등록 오류: Unknown column 'hashed_file_name' in 'field list'
+2025-03-20 10:23:40 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 10:23:43 error: 상품 등록 오류: Column 'original_file_name' specified twice
+2025-03-20 10:25:50 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 10:31:56 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 10:38:34 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 10:50:48 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 11:00:55 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 11:05:50 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 11:47:48 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 12:42:39 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 12:47:24 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 12:48:25 error: 상품 수정 오류: Assignment to constant variable.
+2025-03-20 12:58:40 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 12:58:43 error: 상품 수정 오류: Assignment to constant variable.
+2025-03-20 12:59:43 error: 상품 수정 오류: Assignment to constant variable.
+2025-03-20 13:00:13 error: 상품 수정 오류: Assignment to constant variable.
+2025-03-20 13:13:39 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 13:17:59 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 13:22:35 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 13:32:13 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 14:27:42 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 14:30:41 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 14:33:57 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 14:36:01 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 14:38:54 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-20 14:41:38 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 05:46:34 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 06:43:03 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 06:44:53 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 07:56:48 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 08:13:03 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 08:32:21 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 08:39:09 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 08:41:18 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 08:47:28 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 08:49:31 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 09:10:44 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 09:11:38 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 18:00:32 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 18:01:31 error: 오류 발생: Cannot read properties of undefined (reading 'user')
+2025-03-25 18:01:31 error: 오류 발생: Cannot read properties of undefined (reading 'user')
+2025-03-25 18:02:26 error: 오류 발생: Cannot read properties of undefined (reading 'user')
+2025-03-25 18:02:26 error: 오류 발생: Cannot read properties of undefined (reading 'user')
+2025-03-25 18:04:04 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 18:04:08 error: 오류 발생: Cannot read properties of undefined (reading 'user')
+2025-03-25 18:04:08 error: 오류 발생: Cannot read properties of undefined (reading 'user')
+2025-03-25 18:05:14 error: 오류 발생: Cannot read properties of undefined (reading 'user')
+2025-03-25 18:05:14 error: 오류 발생: Cannot read properties of undefined (reading 'user')
+2025-03-25 18:12:17 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 18:12:35 error: 로그인 오류: Cannot set properties of undefined (setting 'user')
+2025-03-25 18:12:44 error: 로그인 오류: Cannot set properties of undefined (setting 'user')
+2025-03-25 18:16:27 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 18:16:41 error: 로그인 오류: req.session.save is not a function
+2025-03-25 18:21:15 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 19:31:18 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 19:36:23 error: 데이터베이스 연결 실패로 서버를 시작할 수 없습니다.
+2025-03-25 19:37:56 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 19:39:38 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 19:41:41 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 19:43:17 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 19:44:33 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 19:45:35 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 19:46:42 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 19:48:01 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 19:49:29 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-25 19:49:37 info: 로그인 성공: admin@nhncloud.com
+2025-03-25 19:52:14 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 05:34:25 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 05:46:23 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 06:13:21 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 06:20:20 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 06:21:18 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 06:23:34 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 06:23:41 error: 로그인 오류: alert is not defined
+2025-03-26 06:24:06 error: 로그인 오류: alert is not defined
+2025-03-26 06:24:12 error: 로그인 오류: alert is not defined
+2025-03-26 06:26:49 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 06:33:06 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 06:56:35 error: 주문 목록 조회 오류: Cannot read properties of undefined (reading 'id')
+2025-03-26 07:21:50 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 07:22:01 error: 주문 목록 조회 오류: Cannot read properties of undefined (reading 'id')
+2025-03-26 07:26:23 error: 주문 목록 조회 오류: Cannot read properties of undefined (reading 'id')
+2025-03-26 07:26:24 error: 주문 목록 조회 오류: Cannot read properties of undefined (reading 'id')
+2025-03-26 07:26:28 error: 주문 목록 조회 오류: Cannot read properties of undefined (reading 'id')
+2025-03-26 07:27:00 error: 주문 목록 조회 오류: Cannot read properties of undefined (reading 'id')
+2025-03-26 07:31:18 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 07:31:29 error: 주문 목록 조회 오류: Cannot read properties of undefined (reading 'id')
+2025-03-26 07:31:55 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 07:33:44 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 07:33:57 error: 주문 목록 조회 오류: Cannot read properties of undefined (reading 'id')
+2025-03-26 07:34:57 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 07:45:38 error: 장바구니 조회 오류: Cannot read properties of undefined (reading 'id')
+2025-03-26 07:47:24 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 07:52:52 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 08:01:11 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 08:05:08 error: 오류 발생: Cannot read properties of undefined (reading 'role')
+2025-03-26 08:10:55 error: 오류 발생: Cannot read properties of undefined (reading 'role')
+2025-03-26 08:15:12 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 08:15:36 error: 오류 발생: Cannot read properties of undefined (reading 'role')
+2025-03-26 08:55:46 error: 오류 발생: Cannot read properties of undefined (reading 'role')
+2025-03-26 08:57:19 error: 오류 발생: Cannot read properties of undefined (reading 'role')
+2025-03-26 08:57:55 error: 오류 발생: Cannot read properties of undefined (reading 'role')
+2025-03-26 09:08:23 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 09:08:43 error: 오류 발생: Cannot read properties of undefined (reading 'role')
+2025-03-26 09:15:49 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 09:16:41 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 09:18:46 error: 주문 생성 오류: Cannot read properties of undefined (reading 'id')
+2025-03-26 09:20:44 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 09:30:51 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 10:13:29 info: 서버가 http://localhost:8080 에서 실행 중입니다
+2025-03-26 10:22:31 info: 서버가 http://localhost:8080 에서 실행 중입니다

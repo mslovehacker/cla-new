@@ -1,0 +1,18 @@
+const express = require('express');
+const router = express.Router();
+const memberController = require('../controllers/memberController');
+const { authenticate } = require('../middleware/auth');
+
+// 회원가입
+router.post('/new', memberController.register);
+
+// 로그인
+router.post('/login', memberController.login);
+
+// 회원 정보 조회 (인증 필요)
+router.get('/info', authenticate, memberController.getMemberInfo);
+
+// 회원 정보 수정 (인증 필요)
+router.put('/info', authenticate, memberController.updateMemberInfo);
+
+module.exports = router;

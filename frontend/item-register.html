@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>물품 등록 - Enechen Bakery</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="my-4">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/main.html">Enechen Bakery</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item"><a class="nav-link" href="/main.html">홈</a></li>
+                            <li class="nav-item"><a class="nav-link" href="items.html">상품</a></li>
+                        </ul>
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" href="#" id="logoutLink">로그아웃</a></li>
+                            <li class="nav-item"><a class="nav-link" href="my-page.html">마이페이지</a></li>
+                            <li class="nav-item"><a class="nav-link" href="cart.html">장바구니</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="item-register.html">물품 등록</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        
+        <main>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="text-center">물품 등록</h2>
+                        </div>
+                        <div class="card-body">
+                            <form id="itemRegisterForm" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="itemNm" class="form-label">상품명</label>
+                                    <input type="text" class="form-control" id="itemNm" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">가격</label>
+                                    <input type="number" class="form-control" id="price" min="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="stockNumber" class="form-label">재고 수량</label>
+                                    <input type="number" class="form-control" id="stockNumber" min="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="itemDetail" class="form-label">상품 설명</label>
+                                    <textarea class="form-control" id="itemDetail" rows="5" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="imgFile" class="form-label">상품 이미지</label>
+                                    <input type="file" class="form-control" id="imgFile" accept="image/*">
+                                    <small class="text-muted">이미지 파일을 선택하세요. (최대 5MB)</small>
+                                </div>
+                                <div class="alert alert-danger" id="itemRegisterError" style="display: none;"></div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary">상품 등록</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="mt-5 py-3 text-center border-top">
+            <p>© 2025 NHN Cloud Shop. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/item-register.js"></script>   
+</body>
+</html>

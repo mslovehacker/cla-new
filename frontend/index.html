@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENECHEN BAKERY</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        #server-ip {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #666;
+        }
+        .intro-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            background-color: #ff6600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .intro-button:hover {
+            background-color: #e65c00;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ENECHEN BAKERY</h1>
+        <div id="server-ip">Server Internal IP: <span id="ip-address">Loading...</span></div>
+        <!-- Intro 버튼 -->
+        <button class="intro-button" onclick="navigateToMain()">메인 페이지로 이동</button>
+    </div>
+
+    <script>
+        // 서버 내부 IP 가져오기
+        fetch('/internal-ip')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('ip-address').textContent = data.trim();
+            })
+            .catch(error => {
+                console.error('Error fetching internal IP:', error);
+                document.getElementById('ip-address').textContent = 'Unable to retrieve';
+            });
+
+        // 버튼 클릭 시 main.html로 이동
+        function navigateToMain() {
+            window.location.href = 'main.html';
+        }
+    </script>
+</body>
+</html>
